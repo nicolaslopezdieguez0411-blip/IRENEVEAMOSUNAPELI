@@ -1,10 +1,10 @@
 'use client'; 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Home() {
   const [paso, setPaso] = useState(1); 
   const [genero, setGenero] = useState('');
-  const [confeti, setConfeti] = useState<{ id: number; left: string; anim: string }[]>([]);
+  const [flores, setFlores] = useState<{ id: number; left: string }[]>([]);
 
   const peliculas: any = {
     risas: ["La Máscara", "El Dictador", "¿Y dónde están las rubias?", "Supercool"],
@@ -18,20 +18,18 @@ export default function Home() {
     accion: { bg: 'bg-zinc-900', text: 'text-red-500', btn: 'bg-red-600', border: 'border-red-800', emoji: '🔥' },
     miedo: { bg: 'bg-purple-950', text: 'text-purple-300', btn: 'bg-black', border: 'border-purple-600', emoji: '💀' },
     dibujos: { bg: 'bg-sky-100', text: 'text-sky-600', btn: 'bg-sky-400', border: 'border-sky-500', emoji: '🌈' },
-    default: { bg: 'bg-[#ffe4e6]', text: 'text-[#db2777]', btn: 'bg-[#f472b6]', border: 'border-white', emoji: '' }
+    default: { bg: 'bg-[#ffe4e6]', text: 'text-[#db2777]', btn: 'bg-[#f472b6]', border: 'border-white' }
   };
 
   const configActual = estilos[genero] || estilos.default;
 
-  // Función de confeti propia (sin librerías)
-  const lanzarConfeti = () => {
-    const nuevosConfetis = Array.from({ length: 20 }).map((_, i) => ({
-      id: Date.now() + i,
-      left: Math.random() * 100 + '%',
-      anim: Math.random() > 0.5 ? 'animate-bounce' : 'animate-ping'
+  const lanzarEfecto = () => {
+    const nuevas = Array.from({ length: 15 }).map((_, i) => ({
+      id: Math.random(),
+      left: Math.random() * 100 + '%'
     }));
-    setConfeti(nuevosConfetis);
-    setTimeout(() => setConfeti([]), 3000);
+    setFlores(nuevas);
+    setTimeout(() => setFlores([]), 3000);
   };
 
   const enviarMensaje = (peli: string) => {
@@ -43,19 +41,19 @@ export default function Home() {
   return (
     <main className={`relative overflow-hidden flex min-h-screen flex-col items-center justify-center p-4 text-center transition-all duration-700 ${configActual.bg}`}>
       
-      {/* Lluvia de Emojis */}
-      {confeti.map((c) => (
-        <span key={c.id} className={`absolute top-0 text-2xl ${c.anim}`} style={{ left: c.left, transition: 'top 3s linear' }}>
+      {/* Efecto de flores cayendo */}
+      {flores.map((f) => (
+        <span key={f.id} className="absolute top-[-20px] text-2xl animate-bounce" style={{ left: f.left, transition: 'top 3s ease-in' }}>
           🌸
         </span>
       ))}
 
       {paso === 1 && (
         <div className="space-y-6">
-          <h1 onClick={lanzarConfeti} className="text-4xl md:text-6xl font-bold text-[#db2777] cursor-pointer hover:scale-110 active:scale-95 transition-all">
+          <h1 onClick={lanzarEfecto} className="text-4xl md:text-6xl font-bold text-[#db2777] cursor-pointer hover:scale-110 active:scale-95 transition-all">
             ¡Hola, <span className="underline decoration-white">Irene</span>! ✨
           </h1>
-          <p className="text-lg text-[#be185d] font-medium italic">¿Hacemos plan de peli hoy?</p>
+          <p className="text-lg text-[#be185d] font-medium">¿Hacemos plan de peli hoy?</p>
           <button onClick={() => setPaso(2)} className="bg-[#f472b6] hover:bg-[#db2777] text-white font-bold py-4 px-10 rounded-full shadow-xl hover:scale-110 active:scale-90 transition-all text-xl border-4 border-white">
             ¡Siii! 🍿
           </button>
@@ -66,13 +64,11 @@ export default function Home() {
         <div className="space-y-6 w-full max-w-xs">
           <h2 className="text-3xl font-bold text-[#db2777] mb-8">¿Qué te apetece hoy?</h2>
           <div className="flex flex-col gap-4">
-            {['risas', 'accion', 'miedo', 'dibujos'].map((g) => (
-              <button key={g} onClick={() => {setGenero(g); setPaso(3)}} className="bg-white text-zinc-800 border-2 border-pink-200 py-4 rounded-2xl font-bold hover:scale-105 active:scale-95 transition-all shadow-sm capitalize">
-                {g === 'risas' ? '🎬 Risas' : g === 'accion' ? '💥 Acción' : g === 'miedo' ? '😱 Miedo' : '🧸 Dibujos'}
-              </button>
-            ))}
+            <button onClick={() => {setGenero('risas'); setPaso(3)}} className="bg-white text-orange-500 border-2 border-orange-200 py-4 rounded-2xl font-bold hover:scale-105 transition-all shadow-sm">🎬 Risas 😂</button>
+            <button onClick={() => {setGenero('accion'); setPaso(3)}} className="bg-zinc-800 text-white border-2 border-zinc-600 py-4 rounded-2xl font-bold hover:scale-105 transition-all shadow-sm">💥 Acción 🔥</button>
+            <button onClick={() => {setGenero('miedo'); setPaso(3)}} className="bg-purple-900 text-purple-200 border-2 border-purple-700 py-4 rounded-2xl font-bold hover:scale-105 transition-all shadow-sm">😱 De miedo 👻</button>
+            <button onClick={() => {setGenero('dibujos'); setPaso(3)}} className="bg-sky-400 text-white border-2 border-sky-300 py-4 rounded-2xl font-bold hover:scale-105 transition-all shadow-sm">🧸 Dibujos 🌈</button>
           </div>
-          <button onClick={() => setPaso(1)} className="mt-4 text-[#f472b6] text-sm underline">Volver</button>
         </div>
       )}
 

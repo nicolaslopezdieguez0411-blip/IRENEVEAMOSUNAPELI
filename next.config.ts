@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true, // Esto es el "pase VIP"
+    ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
