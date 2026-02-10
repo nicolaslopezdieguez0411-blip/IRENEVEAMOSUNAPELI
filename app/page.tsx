@@ -7,14 +7,14 @@ export default function Home() {
   const [paso, setPaso] = useState(1); 
   const [genero, setGenero] = useState('');
 
-  const peliculas = {
+  const peliculas: Record<string, string[]> = {
     risas: ["La Máscara", "El Dictador", "¿Y dónde están las rubias?", "Supercool"],
     accion: ["El Club de la Lucha", "Bastardos sin gloria", "Siete pecados capitales", "Drive"],
     miedo: ["Hermana Muerte", "Verónica", "Hogar", "Eli"],
     dibujos: ["Los Minions", "Shrek", "El cadáver de la novia", "Madagascar"]
   };
 
-  const estilos = {
+  const estilos: Record<string, { bg: string; text: string; btn: string; border: string; emoji: string }> = {
     risas: { bg: 'bg-yellow-100', text: 'text-orange-600', btn: 'bg-yellow-400', border: 'border-yellow-500', emoji: '😂' },
     accion: { bg: 'bg-zinc-900', text: 'text-red-500', btn: 'bg-red-600', border: 'border-red-800', emoji: '🔥' },
     miedo: { bg: 'bg-purple-950', text: 'text-purple-300', btn: 'bg-black', border: 'border-purple-600', emoji: '💀' },
@@ -49,8 +49,9 @@ export default function Home() {
   return (
     <main className={`flex min-h-screen flex-col items-center justify-center p-4 text-center transition-all duration-700 ${configActual.bg}`}>
       
+      {/* PANTALLA 1: INICIO */}
       {paso === 1 && (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-in fade-in zoom-in duration-500">
           <h1 onClick={lanzarConfeti} className="text-4xl md:text-6xl font-bold text-[#db2777] cursor-pointer hover:scale-110 active:scale-95 transition-all drop-shadow-sm">
             ¡Hola, <span className="underline decoration-white">Irene</span>! ✨
           </h1>
@@ -61,8 +62,9 @@ export default function Home() {
         </div>
       )}
 
+      {/* PANTALLA 2: GÉNEROS */}
       {paso === 2 && (
-        <div className="space-y-6 w-full max-w-xs">
+        <div className="space-y-6 w-full max-w-xs animate-in fade-in slide-in-from-bottom-4">
           <h2 className="text-3xl font-bold text-[#db2777] mb-8">¿Qué te apetece hoy?</h2>
           <div className="flex flex-col gap-4">
             <button onClick={() => seleccionarGenero('risas')} className="bg-white text-orange-500 border-2 border-orange-200 py-4 rounded-2xl font-bold hover:scale-105 active:scale-95 transition-all shadow-sm">
@@ -82,15 +84,15 @@ export default function Home() {
         </div>
       )}
 
+      {/* PANTALLA 3: LISTA DE PELIS */}
       {paso === 3 && genero && (
-        <div className="space-y-6 w-full max-w-sm">
+        <div className="space-y-6 w-full max-w-sm animate-in fade-in zoom-in">
           <h2 className={`text-3xl font-bold ${configActual.text} drop-shadow-md`}>
             {configActual.emoji} ¡Buena elección! {configActual.emoji}
           </h2>
           <div className={`bg-white/80 p-6 rounded-3xl border-4 ${configActual.border} shadow-2xl`}>
             <div className="flex flex-col gap-3">
-              {/* @ts-ignore */}
-              {peliculas[genero].map((peli: string, index: number) => (
+              {peliculas[genero].map((peli, index) => (
                 <button 
                   key={index}
                   onClick={() => enviarMensaje(peli)}
@@ -101,7 +103,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <button onClick={() => {setPaso(2)}} className="bg-white text-zinc-800 py-2 px-8 rounded-full font-bold shadow-md mt-4">Atrás</button>
+          <button onClick={() => {setPaso(2)}} className="bg-white text-zinc-800 py-2 px-8 rounded-full font-bold shadow-md mt-4 hover:scale-105 transition-all">Atrás</button>
         </div>
       )}
     </main>
